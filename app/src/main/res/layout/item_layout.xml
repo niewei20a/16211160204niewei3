@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/textView_top"
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
+    <TextView
+        android:id="@+id/textView_title"
+        android:layout_width="230dp"
+        android:layout_height="80dp"
+        android:layout_below="@id/textView_top"
+        android:layout_alignParentLeft="true"
+        android:maxLines="3"
+        android:textSize="?font14" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/imageView_pic"
+        android:layout_width="130dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/textView_top"
+        android:adjustViewBounds="false"
+        android:layout_toRightOf="@+id/textView_title"
+        fresco:failureImage="@drawable/fail"
+        fresco:placeholderImage="@drawable/load"/>
+
+    <TextView
+        android:id="@+id/textView_res"
+        android:layout_width="230dp"
+        android:layout_height="20dp"
+        android:layout_below="@id/textView_title"
+        android:textSize="?font10" />
+
+    <TextView
+        android:id="@+id/textView_bot"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_below="@id/textView_res" />
+
+</RelativeLayout>

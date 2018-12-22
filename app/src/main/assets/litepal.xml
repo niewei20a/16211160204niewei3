@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+    <dbname value="demo" />
+    <version value="3" />
+    <list>
+        <mapping class="com.example.a18199.a16211160204niewei.News.DatabaseNews" />
+        <mapping class="com.example.a18199.a16211160204niewei.News.NewsDetail" />
+    </list>
+</litepal>

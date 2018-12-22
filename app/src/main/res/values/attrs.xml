@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="font10" format="dimension" />
+    <attr name="font11" format="dimension" />
+    <attr name="font12" format="dimension" />
+    <attr name="font13" format="dimension" />
+    <attr name="font14" format="dimension" />
+    <attr name="font15" format="dimension" />
+    <attr name="font16" format="dimension" />
+    <attr name="font17" format="dimension" />
+    <attr name="font18" format="dimension" />
+    <attr name="font19" format="dimension" />
+</resources>

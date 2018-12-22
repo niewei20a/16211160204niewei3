@@ -1,0 +1,61 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/colorPrimary</item>
+    </style>
+
+
+    <style name="AppBaseTheme" parent="@style/Theme.AppCompat.Light.NoActionBar" />
+
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Default_TextSize_Small">
+        <item name="font10">@dimen/font_size_9sp</item>
+        <item name="font11">@dimen/font_size_9sp</item>
+        <item name="font12">@dimen/font_size_9sp</item>
+        <item name="font13">@dimen/font_size_12sp</item>
+        <item name="font14">@dimen/font_size_13sp</item>
+        <item name="font15">@dimen/font_size_14sp</item>
+        <item name="font16">@dimen/font_size_15sp</item>
+        <item name="font17">@dimen/font_size_16sp</item>
+        <item name="font18">@dimen/font_size_17sp</item>
+        <item name="font19">@dimen/font_size_18sp</item>
+    </style>
+
+
+    <style name="Default_TextSize_Middle">
+        <item name="font10">@dimen/font_size_15sp</item>
+        <item name="font11">@dimen/font_size_16sp</item>
+        <item name="font12">@dimen/font_size_17sp</item>
+        <item name="font13">@dimen/font_size_13sp</item>
+        <item name="font14">@dimen/font_size_14sp</item>
+        <item name="font15">@dimen/font_size_15sp</item>
+        <item name="font16">@dimen/font_size_16sp</item>
+        <item name="font17">@dimen/font_size_17sp</item>
+        <item name="font18">@dimen/font_size_18sp</item>
+        <item name="font19">@dimen/font_size_19sp</item>
+    </style>
+
+
+    <style name="Default_TextSize_Big">
+        <item name="font10">@dimen/font_size_16sp</item>
+        <item name="font11">@dimen/font_size_18sp</item>
+        <item name="font12">@dimen/font_size_18sp</item>
+        <item name="font13">@dimen/font_size_20sp</item>
+        <item name="font14">@dimen/font_size_20sp</item>
+        <item name="font15">@dimen/font_size_20sp</item>
+        <item name="font16">@dimen/font_size_20sp</item>
+        <item name="font17">@dimen/font_size_20sp</item>
+        <item name="font18">@dimen/font_size_20sp</item>
+        <item name="font19">@dimen/font_size_20sp</item>
+    </style>
+
+</resources>
