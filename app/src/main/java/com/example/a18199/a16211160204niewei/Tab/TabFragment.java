@@ -17,12 +17,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.a18199.a16211160204niewei.Activity.MainActivity;
 import com.example.a18199.a16211160204niewei.News.DatabaseNews;
 import com.example.a18199.a16211160204niewei.News.NewsThread;
 import com.example.a18199.a16211160204niewei.News.RecyclerViewAdapter;
 import com.example.a18199.a16211160204niewei.R;
+import com.example.a18199.a16211160204niewei.Utils.NetworkUtils;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -75,11 +77,15 @@ public class TabFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Log.d(TAG, "onViewCreated: Fargment "+mTitle+" 创建 ");
         recyclerView = view.findViewById(R.id.listView);
+        mRefreshLayout = view.findViewById(R.id.refreshLayout);
         list_news = getAll(mTitle);
+        if(list_news.size()==0){
+            mRefreshLayout.autoRefresh();
+        }
         recyclerView.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         adapter = new RecyclerViewAdapter(mContext, list_news);
-        mRefreshLayout = view.findViewById(R.id.refreshLayout);
+
         recyclerView.setAdapter(adapter);
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -111,6 +117,8 @@ public class TabFragment extends Fragment {
                     }
                     break;
             }
+            mRefreshLayout.finishRefresh();
+            mRefreshLayout.finishLoadMore();
             refresh();
             return false;
         }
@@ -121,15 +129,20 @@ public class TabFragment extends Fragment {
     }
 
     private void LoadMoreData(int i) {
-        if (i == 1) {
-            page = 1;
-        } else {
-            page++;
+        if(NetworkUtils.isNetWorkAvailable(getContext())){
+            if (i == 1) {
+                page = 1;
+            } else {
+                page++;
+            }
+            if (mTitle != null) {
+                NewsThread newsThread = new NewsThread(handler, String.valueOf(page),"", mTitle);
+                newsThread.start();
+            }
+        }else {
+            Toast.makeText(getContext(),"请检查网络连接",Toast.LENGTH_SHORT).show();
         }
-        if (mTitle != null) {
-            NewsThread newsThread = new NewsThread(handler, String.valueOf(page),"", mTitle);
-            newsThread.start();
-        }
+
     }
 
     public List<DatabaseNews> getAll(String title) {

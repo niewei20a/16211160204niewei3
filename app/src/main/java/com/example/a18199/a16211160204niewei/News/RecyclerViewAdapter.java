@@ -10,16 +10,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.example.a18199.a16211160204niewei.R;
 import com.example.a18199.a16211160204niewei.Activity.WebViewActivity;
+import com.example.a18199.a16211160204niewei.Utils.SPUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.List;
@@ -70,6 +65,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     intent.putExtra("id", id);
                     Log.d("ID", "onBindViewHolder: " + id);
                     ((Activity) context).startActivityForResult(intent, 200);
+                    ((Activity) context).overridePendingTransition(R.anim.anim, R.anim.in);
                 }
             });
         } else {
@@ -86,45 +82,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 public void onClick(View v) {
                     Intent intent = new Intent(context, WebViewActivity.class);
                     intent.putExtra("id", id);
-                    Log.d("ID", "onBindViewHolder: " + id);
-                    ((Activity) context).startActivityForResult(intent, 200);
+                    ((Activity) context).startActivity(intent);
+                    ((Activity) context).overridePendingTransition(R.anim.anim, R.anim.in);
                 }
             });
         }
-    }
-
-    public static void loadIntoUseFitWidth(Context context, final String imageUrl, int errorImageId, final ImageView imageView) {
-        Glide.with(context)
-                .load(imageUrl)
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .listener(new RequestListener<String, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        return false;
-                    }
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        if (imageView == null) {
-                            return false;
-                        }
-                        if (imageView.getScaleType() != ImageView.ScaleType.FIT_XY) {
-                            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                        }
-                        ViewGroup.LayoutParams params = imageView.getLayoutParams();
-                        int vw = imageView.getWidth() - imageView.getPaddingLeft() - imageView.getPaddingRight();
-                        float scale = (float) vw / (float) resource.getIntrinsicWidth();
-                        int vh = Math.round(resource.getIntrinsicHeight() * scale);
-                        params.height = vh + imageView.getPaddingTop() + imageView.getPaddingBottom();
-                        if (params.height > 360) {
-                            params.height = 360;
-                        }
-                        imageView.setLayoutParams(params);
-                        return false;
-                    }
-                })
-                .placeholder(errorImageId)
-                .error(errorImageId)
-                .into(imageView);
     }
 
     @Override
@@ -133,6 +95,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public int getItemViewType(int position) {
+        String havepic= SPUtils.getData("picture", "");
+        if(havepic.equals("no")){
+            return Item_Type.RECYCLEVIEW_ITEM_TYPE_1.ordinal();
+        }
         if (list.get(position).isHavePic()) {
             if (list.get(position).getImageurls().equals("http://static.ws.126.net/cnews/css13/img/end_news.png")) {
                 return Item_Type.RECYCLEVIEW_ITEM_TYPE_1.ordinal();
@@ -152,6 +118,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     class ViewHolderA extends RecyclerView.ViewHolder {
         TextView title;
         TextView res;
+
         public ViewHolderA(View root) {
             super(root);
             title = root.findViewById(R.id.textView_no_title);
@@ -163,6 +130,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView title;
         TextView res;
         SimpleDraweeView iv;
+
         public ViewHolderB(View root) {
             super(root);
             title = root.findViewById(R.id.textView_title);

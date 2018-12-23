@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.RecyclerView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -28,6 +29,7 @@ import com.example.a18199.a16211160204niewei.News.RecyclerViewAdapter;
 import com.example.a18199.a16211160204niewei.R;
 import com.example.a18199.a16211160204niewei.Tab.FragmentAdapter;
 import com.example.a18199.a16211160204niewei.Tab.TabFragment;
+import com.example.a18199.a16211160204niewei.Utils.SPUtils;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 
 import org.litepal.LitePal;
@@ -48,9 +50,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        setTheme(R.style.Default_TextSize_Big);
-
+        init();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -79,6 +79,31 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    public void init() {
+
+        String font_size = SPUtils.getData("font", "");
+        switch (font_size) {
+            case "medium":
+                setTheme(R.style.Default_TextSize_Middle);
+                break;
+            case "small":
+                setTheme(R.style.Default_TextSize_Small);
+                break;
+            case "big":
+                setTheme(R.style.Default_TextSize_Big);
+                break;
+            default:
+                setTheme(R.style.Default_TextSize_Middle);
+                break;
+        }
+        String day_night = SPUtils.getData("theme","");
+        if(day_night.equals("day")||day_night.equals("")){
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }else {
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -98,6 +123,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         if (item.getItemId() == R.id.ab_search) {
             startActivity(new Intent(MainActivity.this, SearchResultActivity.class));
+            overridePendingTransition(R.anim.anim, R.anim.in);
         }
 
 
@@ -105,7 +131,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
-     getMenuInflater().inflate(R.menu.serach, menu);
+        getMenuInflater().inflate(R.menu.serach, menu);
 //        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 //        SearchView searchView = (SearchView) menu.findItem(R.id.ab_search).getActionView();
 //        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
@@ -137,7 +163,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
-
+            startActivity(new Intent(MainActivity.this, SettingActivity.class));
+            overridePendingTransition(R.anim.anim, R.anim.in);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
