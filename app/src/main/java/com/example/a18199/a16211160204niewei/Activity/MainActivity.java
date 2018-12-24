@@ -1,12 +1,15 @@
 package com.example.a18199.a16211160204niewei.Activity;
 
 import android.app.SearchManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.RecyclerView;
@@ -20,16 +23,16 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.example.a18199.a16211160204niewei.News.DatabaseNews;
-import com.example.a18199.a16211160204niewei.News.NewsPreview;
-import com.example.a18199.a16211160204niewei.News.NewsThread;
-import com.example.a18199.a16211160204niewei.News.RecyclerViewAdapter;
 import com.example.a18199.a16211160204niewei.R;
 import com.example.a18199.a16211160204niewei.Tab.FragmentAdapter;
 import com.example.a18199.a16211160204niewei.Tab.TabFragment;
+import com.example.a18199.a16211160204niewei.Utils.DataCleanManager;
 import com.example.a18199.a16211160204niewei.Utils.SPUtils;
+import com.example.a18199.a16211160204niewei.Utils.ToastUtil;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 
 import org.litepal.LitePal;
@@ -49,6 +52,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);// 隐藏标题
+        // getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.activity_main);
         init();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -77,6 +84,24 @@ public class MainActivity extends AppCompatActivity
         viewPager.setAdapter(fragmentAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("custom-event-name"));
+    }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            String message = intent.getStringExtra("message");
+            if (message.equals("recreate")) {
+                Log.d("receivermessage", "Got message: 接受了" + message);
+                recreate();
+            }
+        }
+    };
+
+    protected void onDestroy() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        super.onDestroy();
     }
 
     public void init() {
@@ -89,17 +114,17 @@ public class MainActivity extends AppCompatActivity
             case "small":
                 setTheme(R.style.Default_TextSize_Small);
                 break;
-            case "big":
+            case "large":
                 setTheme(R.style.Default_TextSize_Big);
                 break;
             default:
                 setTheme(R.style.Default_TextSize_Middle);
                 break;
         }
-        String day_night = SPUtils.getData("theme","");
-        if(day_night.equals("day")||day_night.equals("")){
+        String day_night = SPUtils.getData("theme", "");
+        if (day_night.equals("day") || day_night.equals("")) {
             getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }else {
+        } else {
             getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
     }
@@ -155,7 +180,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {

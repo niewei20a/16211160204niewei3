@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -31,6 +32,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import static android.view.View.SCROLLBARS_OUTSIDE_OVERLAY;
+
 public class WebViewActivity extends AppCompatActivity {
     private Handler handler;
     private WebView webView;
@@ -42,29 +45,36 @@ public class WebViewActivity extends AppCompatActivity {
 
         webView = findViewById(R.id.webview);
 
-        Connector.getDatabase();
         WebSettings webSettings = webView.getSettings();
         webSettings.setDefaultTextEncodingName("utf-8");
-        webSettings = webView.getSettings();
+        webSettings.setBlockNetworkImage(false);//解除数据阻止
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);//支持通过JS打开新窗口
+        webSettings.setLoadsImagesAutomatically(true);//加载图片
         webSettings.setDomStorageEnabled(true);
-        webSettings.setBlockNetworkImage(false);//解决图片不显示
-        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-        webSettings.setLoadsImagesAutomatically(true);
-        webSettings.setDomStorageEnabled(true);
-        webView.setWebChromeClient(new WebChromeClient());
+        webView.setHorizontalScrollBarEnabled(false);//水平不显示
+        webView.setVerticalScrollBarEnabled(false); //垂直不显示
+        webView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);//设置渲染优先级
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
+                //view.loadUrl(url);
+               webView.setEnabled(false);
                 return true;
             }
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                webView.setEnabled(true);
                 super.onPageStarted(view, url, favicon);
-
             }
         });
+        if (SPUtils.getData("font", "").equals("large")) {
+            webSettings.setTextSize(WebSettings.TextSize.LARGER);
+        } else if (SPUtils.getData("font", "").equals("small")) {
+            webSettings.setTextSize(WebSettings.TextSize.SMALLER);
+        } else {
+            webSettings.setTextSize(WebSettings.TextSize.NORMAL);
+        }
 
         handler = new Handler(new Handler.Callback() {
             @Override
@@ -85,18 +95,12 @@ public class WebViewActivity extends AppCompatActivity {
         });
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
-        Log.d("new web", "onCreate:res " + id);
-        if (id != null && id != "")
-
-        {
+        if (id != null && !id.equals("")) {
             ThreadGetNewContent thread = new ThreadGetNewContent(id, handler);
             thread.start();
-        } else
-
-        {
+        } else {
             Toast.makeText(WebViewActivity.this, "---" + id + "---" + id, Toast.LENGTH_LONG).show();
         }
-
     }
 
     @Override
@@ -110,7 +114,6 @@ public class WebViewActivity extends AppCompatActivity {
                     String msg = bundle.getString("id");
                     ThreadGetNewContent thread = new ThreadGetNewContent(msg, handler);
                     thread.start();
-                    Log.d("new web", "onCreate:res " + msg);
                     break;
                 default:
                     break;
@@ -120,31 +123,36 @@ public class WebViewActivity extends AppCompatActivity {
 
     private void load(NewsDetail newsDetail) {
         String content = newsDetail.getContent();
+
         String date = newsDetail.getDate();
         String source = newsDetail.getSource();
         String tilte = newsDetail.getTitle();
-        String titleHtml = "<h1 class=" + "main_title" + ">" + tilte + " </h1>";
-        String style = "<style type=" + "text/css" + ">.main_title{text-align:center}</style>";
+
+        String titleHtml = "<h2 class=\"main_title\">" + tilte + " </h2>";
+        String style = "<style type=\"text/css\">.main_title{font-weight:bold;}</style>";
+        String source_html = "<p>" + source + "  " + date + "</p>";
         if (SPUtils.getData("theme", "").equals("night")) {
-            style = style + loadJs();
+            //webView.loadUrl("javascript:load_night()");
+            style+=loadJs();
+        }else {
+            //webView.loadUrl("javascript:load_day()");
         }
-        String html = "<html><header>" + style + " </header>" + titleHtml + "" + content + "</body></html>";
-        Log.d("HTML", "load: " + html);
+        String html = "<html><header>" + style + " </header><body class=\"night\">" + titleHtml + source_html + content + "</body></html>";
         html = getNewContent(html);
+        Log.d("HTML", "load: " + html);
         webView.loadData(html, "text/html", "uft-8");
     }
 
     public String loadJs() {
-        InputStream mIs = null;
+        InputStream mIs;
         String wholeJS = null;
         try {
-            mIs = getResources().getAssets().open("js.js");
+            mIs = getResources().getAssets().open("night.css");
             if (mIs != null) {
                 byte buff[] = new byte[1024];
                 ByteArrayOutputStream fromFile = new ByteArrayOutputStream();
-                FileOutputStream out = null;
                 do {
-                    int numread = 0;
+                    int numread;
                     numread = mIs.read(buff);
                     if (numread <= 0) {
                         break;
@@ -152,7 +160,6 @@ public class WebViewActivity extends AppCompatActivity {
                     fromFile.write(buff, 0, numread);
                 } while (true);
                 wholeJS = fromFile.toString();
-                Log.d("JS", "onPageStarted: " + wholeJS);
             } else {
                 Toast.makeText(WebViewActivity.this, "js加载失败", Toast.LENGTH_SHORT).show();
             }
@@ -165,14 +172,11 @@ public class WebViewActivity extends AppCompatActivity {
     public static String getNewContent(String htmltext) {
         try {
             Document doc = Jsoup.parse(htmltext);
-            Log.d("HTML", "load: " + doc);
             doc.getElementsByAttributeValue("src", "http://static.ws.126.net/cnews/css13/img/end_news.png").remove();
             doc.getElementsByAttributeValue("src", "http://www.chinanews.com/fileftp/2018/12/2018-12-17/U194P4T47D43466F980DT20181217094708.jpg").remove();
             if (SPUtils.getData("picture", "have").equals("no")) {
                 doc.getElementsByTag("img").remove();
             }
-            Elements p = doc.getElementsByTag("p");
-            // p.get(0).remove();
             Elements elements = doc.getElementsByTag("img");
             for (Element element : elements) {
                 element.attr("width", "100%").attr("height", "auto");

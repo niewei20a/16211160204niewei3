@@ -14,6 +14,7 @@ public class AppNews extends LitePalApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+
         Fresco.initialize(this);
         Connector.getDatabase();
         SPUtils.getInstance(this,"users");

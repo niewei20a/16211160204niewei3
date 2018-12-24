@@ -11,6 +11,8 @@
             android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
             />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

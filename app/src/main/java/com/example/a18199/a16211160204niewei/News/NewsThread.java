@@ -29,7 +29,6 @@ public class NewsThread extends Thread {
         this.tilte = title;
         this.channelName = channelName;
     }
-
     @Override
     public void run() {
         ArrayList<DatabaseNews> list = new ArrayList<>();
@@ -59,7 +58,7 @@ public class NewsThread extends Thread {
                     JSONObject j = (JSONObject) jsonlist.get(i);
                     DatabaseNews np = new DatabaseNews();
                     Date date = j.getDate("pubDate");
-                    String da = new SimpleDateFormat("yyyy-MM-dd").format(date);
+                    String da = new SimpleDateFormat("MM-dd hh:mm").format(date);
                     np.setDate(da);
                     np.setHavePic(j.getBoolean("havePic"));
                     np.setLink(j.getString("link"));
@@ -86,6 +85,6 @@ public class NewsThread extends Thread {
         Bundle bundle = new Bundle();
         bundle.putSerializable("list", list);
         message.setData(bundle);
-        handler.sendMessage(message);//发送message
+        handler.sendMessage(message);
     }
 }

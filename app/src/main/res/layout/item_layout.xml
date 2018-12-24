@@ -10,12 +10,13 @@
 
     <TextView
         android:id="@+id/textView_title"
-        android:layout_width="230dp"
+        android:layout_width="200dp"
         android:layout_height="80dp"
         android:layout_below="@id/textView_top"
         android:layout_alignParentLeft="true"
+        android:textStyle="bold"
         android:maxLines="3"
-        android:textSize="?font14" />
+        android:textSize="?medium_size" />
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/imageView_pic"
@@ -29,10 +30,10 @@
 
     <TextView
         android:id="@+id/textView_res"
-        android:layout_width="230dp"
+        android:layout_width="200dp"
         android:layout_height="20dp"
         android:layout_below="@id/textView_title"
-        android:textSize="?font10" />
+        android:textSize="?small_size" />
 
     <TextView
         android:id="@+id/textView_bot"

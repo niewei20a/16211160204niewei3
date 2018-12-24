@@ -8,6 +8,20 @@ import android.os.Environment;
 import android.text.TextUtils;
 
 public class DataCleanManager {
+    public static String getTotalCacheSize(Context context) throws Exception {
+
+        long cacheSize = getFolderSize(context.getCacheDir());
+
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+
+            cacheSize += getFolderSize(context.getExternalCacheDir());
+
+        }
+
+        return getFormatSize(cacheSize);
+
+    }
+
     /**
      * * 清除本应用内部缓存(/data/data/com.xxx.xxx/cache) * *
      *
@@ -67,11 +81,12 @@ public class DataCleanManager {
             deleteFilesByDirectory(context.getExternalCacheDir());
         }
     }
+
     /**
      * * 清除自定义路径下的文件，使用需小心，请不要误删。而且只支持目录下的文件删除 * *
      *
      * @param filePath
-     * */
+     */
     public static void cleanCustomCache(String filePath) {
         deleteFilesByDirectory(new File(filePath));
     }

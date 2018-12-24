@@ -50,7 +50,6 @@ public class ThreadGetNewContent extends Thread {
                     JSONObject json = js.getJSONObject("pagebean");
                     JSONArray jsonlist = json.getJSONArray("contentlist");
                     JSONObject j = (JSONObject) jsonlist.get(0);
-                    //html = j.getString("html");
                     NewsDetail nd = new NewsDetail();
                     nd.setContent(j.getString("html"));
                     nd.setChannid(j.getString("id"));

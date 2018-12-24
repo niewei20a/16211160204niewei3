@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.a18199.a16211160204niewei">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:name=".Application.AppNews"
         android:allowBackup="true"
@@ -33,6 +34,9 @@
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
         </activity>
+        <activity android:name=".Activity.SettingActivity"></activity>
+
+        <activity android:name=".Activity.DownloadActivity"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>

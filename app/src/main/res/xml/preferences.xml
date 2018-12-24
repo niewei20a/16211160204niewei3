@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="阅读模式">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="pre_day"
+            android:title="夜间模式" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="pre_no_pic"
+            android:title="文本模式" />
+        <ListPreference
+            android:entries="@array/size_array"
+            android:entryValues="@array/size_really_array"
+            android:key="pre_font_size"
+            android:title="字体设置" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="网络">
+        <PreferenceScreen
+            android:key="pre_download"
+            android:summary="离线下载现已缓存的所有新闻"
+            android:title="离线下载">
+        </PreferenceScreen>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="缓存">
+        <PreferenceScreen
+            android:key="pre_clear"
+            android:title="清理缓存" />
+    </PreferenceCategory>
+</PreferenceScreen>

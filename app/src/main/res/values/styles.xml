@@ -1,12 +1,11 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorPrimary">@color/colorPrimary</item>
     </style>
 
 
@@ -18,23 +17,29 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="Default_TextSize_Small">
+        <item name="small_size">@dimen/font_size_9sp</item>
+        <item name="medium_size">@dimen/font_size_14sp</item>
+        <item name="large_size">@dimen/font_size_15sp</item>
+
         <item name="font10">@dimen/font_size_9sp</item>
         <item name="font11">@dimen/font_size_9sp</item>
         <item name="font12">@dimen/font_size_9sp</item>
         <item name="font13">@dimen/font_size_12sp</item>
-        <item name="font14">@dimen/font_size_13sp</item>
-        <item name="font15">@dimen/font_size_14sp</item>
+        <item name="font14">@dimen/font_size_12sp</item>
+        <item name="font15">@dimen/font_size_12sp</item>
         <item name="font16">@dimen/font_size_15sp</item>
-        <item name="font17">@dimen/font_size_16sp</item>
-        <item name="font18">@dimen/font_size_17sp</item>
-        <item name="font19">@dimen/font_size_18sp</item>
+        <item name="font17">@dimen/font_size_15sp</item>
+        <item name="font18">@dimen/font_size_15sp</item>
+        <item name="font19">@dimen/font_size_15sp</item>
     </style>
-
-
     <style name="Default_TextSize_Middle">
-        <item name="font10">@dimen/font_size_15sp</item>
-        <item name="font11">@dimen/font_size_16sp</item>
-        <item name="font12">@dimen/font_size_17sp</item>
+        <item name="small_size">@dimen/font_size_10sp</item>
+        <item name="medium_size">@dimen/font_size_18sp</item>
+        <item name="large_size">@dimen/font_size_18sp</item>
+
+        <item name="font10">@dimen/font_size_12sp</item>
+        <item name="font11">@dimen/font_size_12sp</item>
+        <item name="font12">@dimen/font_size_12sp</item>
         <item name="font13">@dimen/font_size_13sp</item>
         <item name="font14">@dimen/font_size_14sp</item>
         <item name="font15">@dimen/font_size_15sp</item>
@@ -43,9 +48,11 @@
         <item name="font18">@dimen/font_size_18sp</item>
         <item name="font19">@dimen/font_size_19sp</item>
     </style>
-
-
     <style name="Default_TextSize_Big">
+        <item name="small_size">@dimen/font_size_12sp</item>
+        <item name="medium_size">@dimen/font_size_22sp</item>
+        <item name="large_size">@dimen/font_size_21sp</item>
+
         <item name="font10">@dimen/font_size_16sp</item>
         <item name="font11">@dimen/font_size_18sp</item>
         <item name="font12">@dimen/font_size_18sp</item>
@@ -56,6 +63,32 @@
         <item name="font17">@dimen/font_size_20sp</item>
         <item name="font18">@dimen/font_size_20sp</item>
         <item name="font19">@dimen/font_size_20sp</item>
+    </style>
+
+    <!-- 最外层样式 -->
+    <style name="wrap_layout">
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_marginRight">8dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:padding">1px</item>
+
+    </style>
+
+    <!-- 共用层样式 -->
+    <style name="base_layout">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
     </style>
 
 </resources>

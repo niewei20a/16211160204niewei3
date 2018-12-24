@@ -10,4 +10,7 @@
     <attr name="font17" format="dimension" />
     <attr name="font18" format="dimension" />
     <attr name="font19" format="dimension" />
+    <attr name="small_size" format="dimension" />
+    <attr name="medium_size" format="dimension" />
+    <attr name="large_size" format="dimension" />
 </resources>

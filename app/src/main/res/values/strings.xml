@@ -9,12 +9,24 @@
     <item name="tag_first" type="id"></item>
     <item name="tag_second" type="id"></item>
     <string-array name="Channel">
-        <item>国内焦点</item>
-        <item>国际焦点</item>
-        <item>军事焦点</item>
+        <item>国内最新</item>
+        <item>国际最新</item>
+        <item>军事最新</item>
         <item>财经最新</item>
-        <item>互联网焦点</item>
-        <item>体育焦点</item>
+        <item>社会最新</item>
+        <item>体育最新</item>
         <item>游戏最新</item>
     </string-array>
+    <string-array name="size_array">
+        <item>小</item>
+        <item>标准</item>
+        <item>大</item>
+    </string-array>
+    <string-array name="size_really_array">
+        <item>small</item>
+        <item>medium</item>
+        <item>large</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

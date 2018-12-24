@@ -56,7 +56,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((ViewHolderA) holder).title.setText(list.get(position).getTitle());
             String date = list.get(position).getDate();
             String source = list.get(position).getSource();
-            ((ViewHolderA) holder).res.setText(String.valueOf("  " + source + "    " + date));
+            ((ViewHolderA) holder).res.setText(String.valueOf( source + "    " + date));
             ((ViewHolderA) holder).itemView.setTag(list.get(position).getLink());
             ((ViewHolderA) holder).itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -72,10 +72,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((ViewHolderB) holder).title.setText(list.get(position).getTitle());
             String date = list.get(position).getDate();
             String source = list.get(position).getSource();
-            ((ViewHolderB) holder).res.setText(String.valueOf("  " + source + "    " + date));
+            ((ViewHolderB) holder).res.setText(String.valueOf(source + "    " + date));
             Uri url = Uri.parse(list.get(position).getImageurls());
             //loadIntoUseFitWidth(context, list.get(position).getImageurls(), R.drawable.loading, ((ViewHolderB) holder).iv);
             ((ViewHolderB) holder).iv.setImageURI(url);
+
             ((ViewHolderB) holder).itemView.setTag(list.get(position).getLink());
             ((ViewHolderB) holder).itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -1,42 +1,50 @@
 package com.example.a18199.a16211160204niewei.Activity;
 
-
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
-
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
-
+import android.view.View;
+import android.widget.Button;
 
 import com.example.a18199.a16211160204niewei.R;
-import com.example.a18199.a16211160204niewei.Tab.SettingFragment;
 import com.example.a18199.a16211160204niewei.Utils.SPUtils;
+import com.example.a18199.a16211160204niewei.Utils.ToastUtil;
 
-public class SettingActivity extends AppCompatActivity {
+public class DownloadActivity extends AppCompatActivity {
+    @Override
     public void onCreate(Bundle savedInstanceState) {
-        init();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.setting_layout);
-
-        Toolbar toolbar =  findViewById(R.id.setting_toolbar);
+        setContentView(R.layout.layout_download);
+        init();
+        Toolbar toolbar =  findViewById(R.id.Download_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(true);
-        toolbar.setTitle("设置");
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.setting_FrameLayout, new SettingFragment()).commit();
+        toolbar.setTitle("离线阅读");
+        RecyclerView recyclerView = findViewById(R.id.download_view);
+        Button button=findViewById(R.id.Download_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtil.showShort(DownloadActivity.this,"开始下载");
+            }
+        });
     }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==android.R.id.home){
-            finish();
+           finish();
         }
         return super.onOptionsItemSelected(item);
     }
+
+
     public void init() {
         String font_size = SPUtils.getData("font", "");
         switch (font_size) {
@@ -55,10 +63,9 @@ public class SettingActivity extends AppCompatActivity {
         }
         String day_night = SPUtils.getData("theme", "");
         if (day_night.equals("day") || day_night.equals("")) {
-            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
             getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        } else {
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
     }
-
 }
