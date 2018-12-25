@@ -1,13 +1,24 @@
 package com.example.a18199.a16211160204niewei.Tab;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 
-import java.util.ArrayList;
+import com.example.a18199.a16211160204niewei.R;
+import com.facebook.drawee.view.SimpleDraweeView;
+
 import java.util.List;
 
-public class FragmentAdapter extends FragmentPagerAdapter {
+public class FragmentAdapter extends FragmentStatePagerAdapter {
 
     private List<TabFragment> mFragmentList;//各导航的Fragment
     private List<String> mTitle; //导航的标题
@@ -30,5 +41,11 @@ public class FragmentAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return mTitle.get(position);
+    }
+
+    @Override
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+       // mFragmentList.get(position).onDestroy();
+        super.destroyItem(container, position, object);
     }
 }

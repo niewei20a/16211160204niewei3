@@ -15,7 +15,12 @@ import android.widget.TextView;
 import com.example.a18199.a16211160204niewei.R;
 import com.example.a18199.a16211160204niewei.Activity.WebViewActivity;
 import com.example.a18199.a16211160204niewei.Utils.SPUtils;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.backends.pipeline.PipelineDraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.common.ResizeOptions;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
 import java.util.List;
 
@@ -34,6 +39,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.list = list;
         this.context = context;
     }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
@@ -55,7 +61,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((ViewHolderA) holder).title.setText(list.get(position).getTitle());
             String date = list.get(position).getDate();
             String source = list.get(position).getSource();
-            ((ViewHolderA) holder).res.setText(String.valueOf( source + "    " + date));
+            ((ViewHolderA) holder).res.setText(String.valueOf(source + "    " + date));
             ((ViewHolderA) holder).itemView.setTag(list.get(position).getLink());
             ((ViewHolderA) holder).itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -63,7 +69,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     Intent intent = new Intent(context, WebViewActivity.class);
                     intent.putExtra("id", id);
                     Log.d("ID", "onBindViewHolder: " + id);
-                    ((Activity) context).startActivityForResult(intent, 200);
+                    context.startActivity(intent);
                     ((Activity) context).overridePendingTransition(R.anim.anim, R.anim.in);
                 }
             });
@@ -73,15 +79,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             String source = list.get(position).getSource();
             ((ViewHolderB) holder).res.setText(String.valueOf(source + "    " + date));
             Uri url = Uri.parse(list.get(position).getImageurls());
-            ((ViewHolderB) holder).iv.setImageURI(url);
-
-            ((ViewHolderB) holder).itemView.setTag(list.get(position).getLink());
+           // ImageLoader.loadImage(i, url, new SingleImageControllerListener(simpleDraweeView));
+            //((ViewHolderB) holder).iv.setImageURI(url);
+            int width = 130, height = 100;
+            ImageRequest request =ImageRequestBuilder
+                    .newBuilderWithSource(url)
+                    .setResizeOptions(new ResizeOptions(width, height))
+                    .build();
+            PipelineDraweeController controller = (PipelineDraweeController) Fresco.newDraweeControllerBuilder() .setOldController(((ViewHolderB) holder).iv.getController()) .setImageRequest(request)
+                    .build();
+            ((ViewHolderB) holder).iv.setController(controller);
             ((ViewHolderB) holder).itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, WebViewActivity.class);
                     intent.putExtra("id", id);
-                    ((Activity) context).startActivity(intent);
+                    context.startActivity(intent);
                     ((Activity) context).overridePendingTransition(R.anim.anim, R.anim.in);
                 }
             });
@@ -94,8 +107,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public int getItemViewType(int position) {
-        String havepic= SPUtils.getData("picture", "");
-        if(havepic.equals("no")){
+        String havepic = SPUtils.getData("picture", "");
+        if (havepic.equals("no")) {
             return Item_Type.RECYCLEVIEW_ITEM_TYPE_1.ordinal();
         }
         if (list.get(position).isHavePic()) {

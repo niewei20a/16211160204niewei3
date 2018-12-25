@@ -44,7 +44,41 @@ public class WebViewActivity extends AppCompatActivity {
         setContentView(R.layout.webview_layout);
 
         webView = findViewById(R.id.webview);
+        init();
+        handler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                switch (msg.what) {
+                    case 1:
+                        List<NewsDetail> newsList = LitePal.where("channid = ?", id).find(NewsDetail.class);
+                        if (newsList.size() == 0) {
 
+                        } else {
+                            NewsDetail newsDetail = newsList.get(0);
+                            load(newsDetail);
+                        }
+                        break;
+                }
+                return false;
+            }
+        });
+        Intent intent = getIntent();
+        id = intent.getStringExtra("id");
+        if (id != null && !id.equals("")) {
+            ThreadGetNewContent thread = new ThreadGetNewContent(id, handler, false);
+            thread.start();
+        } else {
+            Toast.makeText(WebViewActivity.this, "---" + id + "---" + id, Toast.LENGTH_LONG).show();
+        }
+    }
+    protected void onDestroy() {
+        webView.removeAllViews();
+        webView.destroy();
+        webView=null;
+        handler.removeCallbacksAndMessages(null);
+        super.onDestroy();
+    }
+    public void init() {
         WebSettings webSettings = webView.getSettings();
         webSettings.setDefaultTextEncodingName("utf-8");
         webSettings.setBlockNetworkImage(false);//解除数据阻止
@@ -75,34 +109,7 @@ public class WebViewActivity extends AppCompatActivity {
         } else {
             webSettings.setTextSize(WebSettings.TextSize.NORMAL);
         }
-
-        handler = new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                switch (msg.what) {
-                    case 1:
-                        List<NewsDetail> newsList = LitePal.where("channid = ?", id).find(NewsDetail.class);
-                        if (newsList.size() == 0) {
-
-                        } else {
-                            NewsDetail newsDetail = newsList.get(0);
-                            load(newsDetail);
-                        }
-                        break;
-                }
-                return false;
-            }
-        });
-        Intent intent = getIntent();
-        id = intent.getStringExtra("id");
-        if (id != null && !id.equals("")) {
-            ThreadGetNewContent thread = new ThreadGetNewContent(id, handler, false);
-            thread.start();
-        } else {
-            Toast.makeText(WebViewActivity.this, "---" + id + "---" + id, Toast.LENGTH_LONG).show();
-        }
     }
-
 
     private void load(NewsDetail newsDetail) {
         String content = newsDetail.getContent();

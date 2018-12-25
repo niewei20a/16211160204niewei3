@@ -22,6 +22,10 @@ import com.example.a18199.a16211160204niewei.Utils.DataCleanManager;
 import com.example.a18199.a16211160204niewei.Utils.SPUtils;
 import com.example.a18199.a16211160204niewei.Utils.ToastUtil;
 
+import org.litepal.LitePal;
+
+import java.io.File;
+
 public class SettingFragment extends PreferenceFragment {
     private CheckBoxPreference checkBox_day;
     private CheckBoxPreference checkBox_no_pic;
@@ -47,7 +51,7 @@ public class SettingFragment extends PreferenceFragment {
         checkBox_no_pic = (CheckBoxPreference) findPreference("pre_no_pic");
         list_size = (ListPreference) findPreference("pre_font_size");
         pre_download = (PreferenceScreen) findPreference("pre_download");
-        pre_clear= (PreferenceScreen) findPreference("pre_clear");
+        pre_clear = (PreferenceScreen) findPreference("pre_clear");
 
         if (SPUtils.getData("theme", "").equals("night")) {
             checkBox_day.setChecked(true);
@@ -95,21 +99,23 @@ public class SettingFragment extends PreferenceFragment {
         pre_download.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                startActivity(new Intent(getActivity(),DownloadActivity.class));
+                startActivity(new Intent(getActivity(), DownloadActivity.class));
                 getActivity().overridePendingTransition(R.anim.alpha_out, R.anim.alpha_in);
                 return true;
             }
         });
         try {
-            pre_clear.setSummary("当前缓存为"+DataCleanManager.getTotalCacheSize(getActivity()));
+
+            long i =DataCleanManager.getFolderSize(new File("/data/data/com.example.a18199.a16211160204niewei"));
+            Log.d(TAG, "init: "+DataCleanManager.getFormatSize(i));
+            pre_clear.setSummary("当前缓存为" + DataCleanManager.getTotalCacheSize(getActivity()));
         } catch (Exception e) {
             e.printStackTrace();
         }
         pre_clear.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                DataCleanManager.cleanInternalCache(getActivity());
-                DataCleanManager.cleanExternalCache(getActivity());
+                LitePal.deleteAll("NewsDetail","1=1");
                 return true;
             }
         });
@@ -145,11 +151,11 @@ public class SettingFragment extends PreferenceFragment {
             }
         });
     }
-    public void  SendBroad(){
+
+    public void SendBroad() {
         Intent intent = new Intent("custom-event-name");
-        // You can also include some extra data.
         intent.putExtra("message", "recreate");
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
-        Log.d("receivermessage", "Got message: 发送了"  );
+        Log.d("receivermessage", "Got message: 发送了");
     }
 }

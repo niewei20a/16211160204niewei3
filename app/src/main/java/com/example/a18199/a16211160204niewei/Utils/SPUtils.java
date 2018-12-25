@@ -50,7 +50,6 @@ public class SPUtils {
         editor.apply();
         return result;
     }
-
     public static boolean putData(String key, Boolean value) {
         boolean result;
         SharedPreferences.Editor editor = sp.edit();
@@ -65,14 +64,12 @@ public class SPUtils {
         editor.apply();
         return result;
     }
-
     public static String getData(String key, String defaultValue) {
         String type = defaultValue.getClass().getSimpleName();
         String result;
         result = sp.getString(key, defaultValue);
         return result;
     }
-
     public static boolean getData(String key, Boolean defaultValue) {
         boolean result = false;
         String type = defaultValue.getClass().getSimpleName();
@@ -83,6 +80,5 @@ public class SPUtils {
         }
         return result;
     }
-
 }
 

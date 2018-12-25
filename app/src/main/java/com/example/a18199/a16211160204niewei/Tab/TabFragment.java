@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import com.example.a18199.a16211160204niewei.News.NewsThread;
 import com.example.a18199.a16211160204niewei.News.RecyclerViewAdapter;
 import com.example.a18199.a16211160204niewei.R;
 import com.example.a18199.a16211160204niewei.Utils.NetworkUtils;
+import com.example.a18199.a16211160204niewei.Utils.ToastUtil;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -40,11 +42,13 @@ public class TabFragment extends Fragment {
     private RecyclerView recyclerView;
     private String mTitle;
     private Context mContext;
-    private int page;
+    private int page = 1;
     private List<DatabaseNews> list_news;
     private RecyclerViewAdapter adapter;
     private RefreshLayout mRefreshLayout;
-    private static String TAG ="TabFragment";
+    private View rootView;
+    private static String TAG = "TABFRAGMENT1";
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,8 +56,10 @@ public class TabFragment extends Fragment {
         if (getArguments() != null) {
             mTitle = getArguments().getString("title");
         }
-        page = 1;
-        list_news=getAll(mTitle);
+    }
+
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
     }
 
     public static TabFragment newInstance(String title) {
@@ -64,11 +70,14 @@ public class TabFragment extends Fragment {
         return f;
     }
 
-    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.recycler_layout, container, false);
+        if (rootView == null) {
+            rootView = inflater.inflate(R.layout.recycler_layout, container, false);
+        }
+        return rootView;
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -76,14 +85,15 @@ public class TabFragment extends Fragment {
         recyclerView = view.findViewById(R.id.listView);
         mRefreshLayout = view.findViewById(R.id.refreshLayout);
         list_news = getAll(mTitle);
-        if(list_news.size()==0){
+        if (list_news.size() == 0) {
             mRefreshLayout.autoRefresh();
         }
         recyclerView.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-        adapter = new RecyclerViewAdapter(mContext, list_news);
 
+        adapter = new RecyclerViewAdapter(mContext, list_news);
         recyclerView.setAdapter(adapter);
+
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
@@ -98,19 +108,36 @@ public class TabFragment extends Fragment {
                 mRefreshLayout.finishLoadMore(1000);//传入false表示加载失败
             }
         });
+
     }
 
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(rootView!=null){
+            ((ViewGroup) rootView.getParent()).removeView(rootView);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        handler.removeCallbacksAndMessages(null);
+        rootView=null;
+        super.onDestroy();
+    }
 
     Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:
-                    if (page == 1) {
-                        list_news.removeAll(list_news);
-                        list_news.addAll((Collection<? extends DatabaseNews>) msg.getData().getSerializable("list"));
-                    } else {
+                    List<DatabaseNews> list_get = (List<DatabaseNews>) msg.getData().getSerializable("list");
+                    if (list_get.size() != 0) {
+                        if (page == 1) {
+                            list_news.clear();
+                        }
                         list_news.addAll((List<DatabaseNews>) msg.getData().getSerializable("list"));
+                    } else {
+                        ToastUtil.showShortString(getActivity(), "刷新失败");
                     }
                     break;
             }
@@ -126,20 +153,19 @@ public class TabFragment extends Fragment {
     }
 
     private void LoadMoreData(int i) {
-        if(NetworkUtils.isNetWorkAvailable(getContext())){
+        if (NetworkUtils.isNetWorkAvailable(getContext())) {
             if (i == 1) {
                 page = 1;
             } else {
                 page++;
             }
             if (mTitle != null) {
-                NewsThread newsThread = new NewsThread(handler, String.valueOf(page),"", mTitle);
+                NewsThread newsThread = new NewsThread(handler, String.valueOf(page), "", mTitle);
                 newsThread.start();
             }
-        }else {
-            Toast.makeText(getContext(),"请检查网络连接",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getContext(), "请检查网络连接", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     public List<DatabaseNews> getAll(String title) {

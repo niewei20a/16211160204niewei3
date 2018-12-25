@@ -26,6 +26,8 @@
         android:adjustViewBounds="false"
         android:layout_toRightOf="@+id/textView_title"
         fresco:failureImage="@drawable/fail"
+        fresco:actualImageScaleType="centerCrop"
+        fresco:roundAsCircle="false"
         fresco:placeholderImage="@drawable/load"/>
 
     <TextView

@@ -72,7 +72,7 @@ public class NetworkUtils {
     public static boolean isWiFiConnected(Context context) {
         ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = manager.getActiveNetworkInfo();
-        return networkInfo.getType() == manager.TYPE_WIFI ? true : false;
+        return networkInfo.getType() == manager.TYPE_WIFI;
     }
 
     /**

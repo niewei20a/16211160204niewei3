@@ -37,6 +37,7 @@ public class DownloadActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RefreshLayout mRefreshLayout;
     private List<NewsDetail> list;
+    private Handler handler;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,7 +60,7 @@ public class DownloadActivity extends AppCompatActivity {
         toolbar.setTitle("离线阅读");
 
         Button button = findViewById(R.id.Download_button);
-        final Handler handler = new Handler(new Handler.Callback() {
+        handler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
                 if (msg.what == 1) {
@@ -72,7 +73,8 @@ public class DownloadActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (list.size() >= 100) {
-                    ToastUtil.showShortString(DownloadActivity.this,"离线新闻已下载");
+
+                    ToastUtil.showShortString(DownloadActivity.this, "离线新闻已下载");
                 } else {
                     ThreadGetNewContent td = new ThreadGetNewContent("", handler, true);
                     td.start();
@@ -80,6 +82,12 @@ public class DownloadActivity extends AppCompatActivity {
             }
         });
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        handler.removeCallbacksAndMessages(null);
+        super.onDestroy();
     }
 
     @Override
