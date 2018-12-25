@@ -58,7 +58,7 @@ public class WebViewActivity extends AppCompatActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 //view.loadUrl(url);
-               webView.setEnabled(false);
+                webView.setEnabled(false);
                 return true;
             }
 
@@ -96,30 +96,13 @@ public class WebViewActivity extends AppCompatActivity {
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
         if (id != null && !id.equals("")) {
-            ThreadGetNewContent thread = new ThreadGetNewContent(id, handler);
+            ThreadGetNewContent thread = new ThreadGetNewContent(id, handler, false);
             thread.start();
         } else {
             Toast.makeText(WebViewActivity.this, "---" + id + "---" + id, Toast.LENGTH_LONG).show();
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Toast.makeText(WebViewActivity.this, "---" + requestCode + "---" + resultCode, Toast.LENGTH_LONG).show();
-        if (requestCode == RESULT_OK) {
-            switch (requestCode) {
-                case 200:
-                    Intent intent = getIntent();
-                    Bundle bundle = intent.getBundleExtra("BUNDLE_WEATHER_INFO");
-                    String msg = bundle.getString("id");
-                    ThreadGetNewContent thread = new ThreadGetNewContent(msg, handler);
-                    thread.start();
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
 
     private void load(NewsDetail newsDetail) {
         String content = newsDetail.getContent();
@@ -127,20 +110,20 @@ public class WebViewActivity extends AppCompatActivity {
         String date = newsDetail.getDate();
         String source = newsDetail.getSource();
         String tilte = newsDetail.getTitle();
-
         String titleHtml = "<h2 class=\"main_title\">" + tilte + " </h2>";
         String style = "<style type=\"text/css\">.main_title{font-weight:bold;}</style>";
         String source_html = "<p>" + source + "  " + date + "</p>";
         if (SPUtils.getData("theme", "").equals("night")) {
             //webView.loadUrl("javascript:load_night()");
-            style+=loadJs();
-        }else {
+            style += loadJs();
+        } else {
             //webView.loadUrl("javascript:load_day()");
         }
         String html = "<html><header>" + style + " </header><body class=\"night\">" + titleHtml + source_html + content + "</body></html>";
         html = getNewContent(html);
         Log.d("HTML", "load: " + html);
-        webView.loadData(html, "text/html", "uft-8");
+        //webView.loadData(html,"text/html; charset=UTF-8", null);
+        webView.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null);
     }
 
     public String loadJs() {

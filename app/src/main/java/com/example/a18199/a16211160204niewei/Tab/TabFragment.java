@@ -52,7 +52,6 @@ public class TabFragment extends Fragment {
         if (getArguments() != null) {
             mTitle = getArguments().getString("title");
         }
-        Log.d(TAG, "onCreate: Fargment "+mTitle+" 创建 ");
         page = 1;
         list_news=getAll(mTitle);
     }
@@ -68,14 +67,12 @@ public class TabFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView: Fargment "+mTitle+" 创建 ");
         return inflater.inflate(R.layout.recycler_layout, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, "onViewCreated: Fargment "+mTitle+" 创建 ");
         recyclerView = view.findViewById(R.id.listView);
         mRefreshLayout = view.findViewById(R.id.refreshLayout);
         list_news = getAll(mTitle);

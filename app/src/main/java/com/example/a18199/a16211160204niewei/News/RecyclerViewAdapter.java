@@ -34,7 +34,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.list = list;
         this.context = context;
     }
-
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
@@ -74,7 +73,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             String source = list.get(position).getSource();
             ((ViewHolderB) holder).res.setText(String.valueOf(source + "    " + date));
             Uri url = Uri.parse(list.get(position).getImageurls());
-            //loadIntoUseFitWidth(context, list.get(position).getImageurls(), R.drawable.loading, ((ViewHolderB) holder).iv);
             ((ViewHolderB) holder).iv.setImageURI(url);
 
             ((ViewHolderB) holder).itemView.setTag(list.get(position).getLink());
