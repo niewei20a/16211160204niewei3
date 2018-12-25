@@ -36,6 +36,7 @@ import java.util.List;
 public class DownloadActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RefreshLayout mRefreshLayout;
+    private List<NewsDetail> list;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,9 +48,8 @@ public class DownloadActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mRefreshLayout = findViewById(R.id.Download_refreshLayout);
-        List<NewsDetail> list = new ArrayList<>();
         list = LitePal.findAll(NewsDetail.class);
-        Log.d("LISTSIZE", "onCreate: " + list.size());
+
         NewDetailAdapter adapter = new NewDetailAdapter(this, list);
         Toolbar toolbar = findViewById(R.id.Download_toolbar);
         setSupportActionBar(toolbar);
@@ -57,12 +57,13 @@ public class DownloadActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(true);
         toolbar.setTitle("离线阅读");
+
         Button button = findViewById(R.id.Download_button);
         final Handler handler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
                 if (msg.what == 1) {
-                    Log.d("download_size", "handleMessage: 下载完成");
+                    list = LitePal.findAll(NewsDetail.class);
                 }
                 return false;
             }
@@ -70,8 +71,12 @@ public class DownloadActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ThreadGetNewContent td = new ThreadGetNewContent("", handler, true);
-                td.start();
+                if (list.size() >= 100) {
+                    ToastUtil.showShortString(DownloadActivity.this,"离线新闻已下载");
+                } else {
+                    ThreadGetNewContent td = new ThreadGetNewContent("", handler, true);
+                    td.start();
+                }
             }
         });
         recyclerView.setAdapter(adapter);

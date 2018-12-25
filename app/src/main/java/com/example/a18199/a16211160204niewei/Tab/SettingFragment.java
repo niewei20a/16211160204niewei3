@@ -110,7 +110,6 @@ public class SettingFragment extends PreferenceFragment {
             public boolean onPreferenceClick(Preference preference) {
                 DataCleanManager.cleanInternalCache(getActivity());
                 DataCleanManager.cleanExternalCache(getActivity());
-                ToastUtil.showShort(getActivity(),"清除成功");
                 return true;
             }
         });
@@ -132,10 +131,10 @@ public class SettingFragment extends PreferenceFragment {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 if (!checkBox_day.isChecked()) {
                     SPUtils.putData("theme", "night");
-                    ToastUtil.showShort(getActivity(), "Now is the night theme");
+
                 } else {
                     SPUtils.putData("theme", "day");
-                    ToastUtil.showShort(getActivity(), "Now is the day theme");
+
                 }
                 Intent intent = new Intent(getActivity(), SettingActivity.class);
                 getActivity().finish();

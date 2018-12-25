@@ -45,7 +45,7 @@ public class ToastUtil {
      * @param context
      * @param message
      */
-    public static void showShort(Context context, CharSequence message) {
+    public static void showShortString(Context context, CharSequence message) {
         if (isShow) {
             if (mToast == null) {
                 mToast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
