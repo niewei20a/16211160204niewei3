@@ -2,8 +2,8 @@
     <string name="app_name">16211160204niewei</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">android app</string>
-    <string name="nav_header_subtitle">android app by niewei</string>
+    <string name="nav_header_title">android application</string>
+    <string name="nav_header_subtitle">nie wei</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">设置</string>
     <item name="tag_first" type="id"></item>
