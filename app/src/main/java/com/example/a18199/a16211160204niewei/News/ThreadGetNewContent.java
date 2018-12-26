@@ -32,6 +32,9 @@ public class ThreadGetNewContent extends Thread {
 
     @Override
     public void run() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm:ss:SSS");
+        String date_now = simpleDateFormat.format(System.currentTimeMillis());
+        Log.d("时间", "run: +start " + date_now);
         List<NewsDetail> newsList = LitePal.where("channid = ?", id).find(NewsDetail.class);
         if (newsList.size() == 0 || isAll) {
             String res;
@@ -60,7 +63,8 @@ public class ThreadGetNewContent extends Thread {
                         .addTextPara("id", id)
                         .post();
             }
-            Log.d("GETALLNEWS", "run: "+isAll);
+            date_now = simpleDateFormat.format(System.currentTimeMillis());
+            Log.d("时间", "run: + end " + date_now + "length = " + res.length());
             try {
                 JSONObject jsonObject = JSON.parseObject(res);
                 if (jsonObject.getInteger("showapi_res_code") != 0) {
@@ -83,19 +87,22 @@ public class ThreadGetNewContent extends Thread {
                         } else {
                             Log.d("SAVE", "存储失败" + nd);
                         }
+                        if (isAll) {
+                            Message message = handler.obtainMessage();
+                            message.what = i + 2;
+                            handler.sendMessage(message);
+                        }
                     }
-
                 }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        //Message message = handler.obtainMessage();//获取message
-        Message message = new Message();
+        Message message = handler.obtainMessage();
         message.what = 1;
-//        Bundle bundle = new Bundle();
-//        bundle.putSerializable("html", html);
-//        message.setData(bundle);
-        handler.sendMessage(message);//发送message
+        handler.sendMessage(message);
+        date_now = simpleDateFormat.format(System.currentTimeMillis());
+        Log.d("时间", "run: + end  now" + date_now);
     }
 }

@@ -8,18 +8,38 @@ import android.os.Environment;
 import android.text.TextUtils;
 
 public class DataCleanManager {
+
     public static String getTotalCacheSize(Context context) throws Exception {
-
         long cacheSize = getFolderSize(context.getCacheDir());
-
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-
             cacheSize += getFolderSize(context.getExternalCacheDir());
-
         }
-
         return getFormatSize(cacheSize);
+    }
 
+
+    public static void clearAllCache(Context context) {
+        deleteDir(context.getCacheDir());
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            deleteDir(context.getExternalCacheDir());
+            //下面两句清理webview网页缓存.但是每次执行都报false,我用的是魅蓝5.1的系统，后来发现且/data/data/应用package目录下找不到database文///件夹 不知道是不是个别手机的问题，
+            context.deleteDatabase("webview.db");
+            context.deleteDatabase("webviewCache.db");
+        }
+    }
+
+
+    private static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+        return dir.delete();
     }
 
     /**

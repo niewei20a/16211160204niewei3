@@ -29,7 +29,7 @@
                 android:layout_gravity="bottom|end"
                 android:layout_margin="16dp"
                 android:src="@drawable/ic_refresh"
-
+                app:backgroundTint="@color/colorfad"
                 android:visibility="invisible"
                 app:layout_anchor="@+id/listView"
                 app:layout_anchorGravity="center|right"

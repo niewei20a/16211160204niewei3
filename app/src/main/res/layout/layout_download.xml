@@ -6,9 +6,9 @@
 
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/Download_app"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/Download_app"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
@@ -33,6 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/Download_app">
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/Download_view"
             android:layout_width="match_parent"

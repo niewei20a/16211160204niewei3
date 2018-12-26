@@ -53,7 +53,7 @@ public class SearchResultActivity extends AppCompatActivity {
 
 
         recyclerView = findViewById(R.id.listView);
-        Toolbar toolbar= findViewById(R.id.searchResult_toolbar);
+        Toolbar toolbar = findViewById(R.id.searchResult_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -86,11 +86,12 @@ public class SearchResultActivity extends AppCompatActivity {
             }
         });
     }
+
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         MenuItem searchItem = menu.findItem(R.id.search_item);
         //通过MenuItem得到SearchView
-        searchView  = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -108,12 +109,14 @@ public class SearchResultActivity extends AppCompatActivity {
         });
         return true;
     }
+
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId()==android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             finish();
         }
         return super.onOptionsItemSelected(item);
     }
+
     Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {

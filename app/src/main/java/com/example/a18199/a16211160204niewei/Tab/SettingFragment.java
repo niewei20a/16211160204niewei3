@@ -105,9 +105,6 @@ public class SettingFragment extends PreferenceFragment {
             }
         });
         try {
-
-            long i =DataCleanManager.getFolderSize(new File("/data/data/com.example.a18199.a16211160204niewei"));
-            Log.d(TAG, "init: "+DataCleanManager.getFormatSize(i));
             pre_clear.setSummary("当前缓存为" + DataCleanManager.getTotalCacheSize(getActivity()));
         } catch (Exception e) {
             e.printStackTrace();
@@ -115,7 +112,24 @@ public class SettingFragment extends PreferenceFragment {
         pre_clear.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                LitePal.deleteAll("NewsDetail","1=1");
+                LitePal.deleteAll("NewsDetail");
+                String i = "";
+                try {
+                    i = DataCleanManager.getTotalCacheSize(getActivity());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (i.equals("0.0Byte")) {
+                    ToastUtil.showShortString(getActivity(), "缓存已清理！");
+                } else {
+                    DataCleanManager.clearAllCache(getActivity());
+                    ToastUtil.showShortString(getActivity(), "清理成功");
+                }
+                try {
+                    pre_clear.setSummary("当前缓存为" + DataCleanManager.getTotalCacheSize(getActivity()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 return true;
             }
         });
@@ -140,7 +154,6 @@ public class SettingFragment extends PreferenceFragment {
 
                 } else {
                     SPUtils.putData("theme", "day");
-
                 }
                 Intent intent = new Intent(getActivity(), SettingActivity.class);
                 getActivity().finish();
