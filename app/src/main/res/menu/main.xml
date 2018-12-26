@@ -5,9 +5,9 @@
     tools:context=".MainActivity" >
 
     <item
-        android:id="@+id/ab_search"
+        android:id="@+id/search_item"
         android:orderInCategory="60"
         android:title="action_search"
         app:actionViewClass="android.support.v7.widget.SearchView"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
 </menu>

@@ -42,12 +42,12 @@ public class MainActivity extends AppCompatActivity
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.activity_main);
         init();
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -137,8 +137,6 @@ public class MainActivity extends AppCompatActivity
             startActivity(new Intent(MainActivity.this, SearchResultActivity.class));
             overridePendingTransition(R.anim.anim, R.anim.in);
         }
-
-
         return super.onOptionsItemSelected(item);
     }
 

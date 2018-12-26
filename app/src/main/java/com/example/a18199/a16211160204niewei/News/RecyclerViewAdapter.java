@@ -79,8 +79,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             String source = list.get(position).getSource();
             ((ViewHolderB) holder).res.setText(String.valueOf(source + "    " + date));
             Uri url = Uri.parse(list.get(position).getImageurls());
-           // ImageLoader.loadImage(i, url, new SingleImageControllerListener(simpleDraweeView));
-            //((ViewHolderB) holder).iv.setImageURI(url);
             int width = 130, height = 100;
             ImageRequest request =ImageRequestBuilder
                     .newBuilderWithSource(url)

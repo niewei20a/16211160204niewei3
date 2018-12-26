@@ -32,6 +32,7 @@ public class SettingActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.setting_FrameLayout, new SettingFragment()).commit();
+
     }
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==android.R.id.home){

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +17,7 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 
@@ -49,24 +51,16 @@ public class SearchResultActivity extends AppCompatActivity {
         setContentView(R.layout.search_layout);
         setTheme(R.style.Default_TextSize_Big);
 
-        searchView = findViewById(R.id.search_news);
+
         recyclerView = findViewById(R.id.listView);
+        Toolbar toolbar= findViewById(R.id.searchResult_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        toolbar.setTitle("搜索新闻");
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                //Toast.makeText(this, "back", Toast.LENGTH_SHORT).show();
-                title = query;
-                LoadMoreData(1, title);
-                return true;
-            }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-
-                return false;
-            }
-        });
         recyclerView.addItemDecoration(new DividerItemDecoration(SearchResultActivity.this, DividerItemDecoration.VERTICAL));
         recyclerView.setLayoutManager(new LinearLayoutManager(SearchResultActivity.this, LinearLayoutManager.VERTICAL, false));
         mRefreshLayout = findViewById(R.id.refreshLayout);
@@ -92,7 +86,34 @@ public class SearchResultActivity extends AppCompatActivity {
             }
         });
     }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        MenuItem searchItem = menu.findItem(R.id.search_item);
+        //通过MenuItem得到SearchView
+        searchView  = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //Toast.makeText(this, "back", Toast.LENGTH_SHORT).show();
+                title = query;
+                LoadMoreData(1, title);
+                return true;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                return false;
+            }
+        });
+        return true;
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==android.R.id.home){
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
     Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {

@@ -4,32 +4,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/Download_toolbar"
+
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:textStyle="bold"
-            android:background="@android:color/transparent"
-            android:id="@+id/Download_button"
-            android:text="下载" />
-    </android.support.v7.widget.Toolbar>
+        android:layout_height="wrap_content"
+        android:id="@+id/Download_app"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/Download_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/Download_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:background="@android:color/transparent"
+                android:text="下载"
+                android:textStyle="bold" />
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/Download_refreshLayout"
-        android:layout_below="@id/Download_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        android:layout_below="@id/Download_app">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/Download_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingRight="15dp"
             android:paddingLeft="15dp"
-            />
+            android:paddingRight="15dp" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </RelativeLayout>

@@ -27,13 +27,6 @@ public class AppNews extends LitePalApplication {
             SPUtils.putData("picture", "have");
             SPUtils.putData("isfirst", false);
         }
-        refWatcher = LeakCanary.install(this);
     }
 
-    public static RefWatcher getRefWatcher(Context context) {
-        AppNews application = (AppNews) context.getApplicationContext();
-        return application.refWatcher;
-    }
-
-    private RefWatcher refWatcher;
 }
