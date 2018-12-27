@@ -22,6 +22,7 @@ import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -68,9 +69,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 public void onClick(View v) {
                     Intent intent = new Intent(context, WebViewActivity.class);
                     intent.putExtra("id", id);
-                    Log.d("ID", "onBindViewHolder: " + id);
                     context.startActivity(intent);
-                    ((Activity) context).overridePendingTransition(R.anim.anim, R.anim.in);
+                    ((Activity) context).overridePendingTransition(R.anim.alpha_out, R.anim.alpha_in);
                 }
             });
         } else {
@@ -80,11 +80,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((ViewHolderB) holder).res.setText(String.valueOf(source + "    " + date));
             Uri url = Uri.parse(list.get(position).getImageurls());
             int width = 130, height = 100;
-            ImageRequest request =ImageRequestBuilder
+            ImageRequest request = ImageRequestBuilder
                     .newBuilderWithSource(url)
                     .setResizeOptions(new ResizeOptions(width, height))
                     .build();
-            PipelineDraweeController controller = (PipelineDraweeController) Fresco.newDraweeControllerBuilder() .setOldController(((ViewHolderB) holder).iv.getController()) .setImageRequest(request)
+            PipelineDraweeController controller = (PipelineDraweeController) Fresco.newDraweeControllerBuilder().setOldController(((ViewHolderB) holder).iv.getController()).setImageRequest(request)
                     .build();
             ((ViewHolderB) holder).iv.setController(controller);
             ((ViewHolderB) holder).itemView.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +93,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     Intent intent = new Intent(context, WebViewActivity.class);
                     intent.putExtra("id", id);
                     context.startActivity(intent);
-                    ((Activity) context).overridePendingTransition(R.anim.anim, R.anim.in);
+                    ((Activity) context).overridePendingTransition(R.anim.alpha_out, R.anim.alpha_in);
                 }
             });
         }
@@ -119,6 +119,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return Item_Type.RECYCLEVIEW_ITEM_TYPE_1.ordinal();
         }
     }
+
 
     @Override
     public int getItemCount() {

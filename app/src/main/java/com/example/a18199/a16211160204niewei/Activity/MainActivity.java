@@ -58,15 +58,15 @@ public class MainActivity extends AppCompatActivity
         Resources res = getResources();
         String[] city = res.getStringArray(R.array.Channel);
 
-        List<TabFragment> list_tab = new ArrayList<>();
-        List<String> list_tilte = new ArrayList<>();
+        List<TabFragment> list_tab = new ArrayList<>(city.length);
+        List<String> list_title = new ArrayList<>(city.length);
         for (int i = 0; i < city.length; i++) {
             String city_array = city[i];
             tabLayout.addTab(tabLayout.newTab().setText(city_array));
             list_tab.add(TabFragment.newInstance(city_array));
-            list_tilte.add(city_array);
+            list_title.add(city_array);
         }
-        FragmentAdapter fragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), list_tab, list_tilte);
+        FragmentAdapter fragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), list_tab, list_title);
         viewPager.setAdapter(fragmentAdapter);
         tabLayout.setupWithViewPager(viewPager);
 

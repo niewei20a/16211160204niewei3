@@ -13,6 +13,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,6 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import org.litepal.LitePal;
 
 
-import java.util.Collection;
 import java.util.List;
 
 
@@ -57,7 +57,6 @@ public class TabFragment extends Fragment {
     private View rootView;
     private static String TAG = "TABFRAGMENT1";
 
-    //static 代码段可以防止内存泄露
     static {
         //设置全局的Header构建器
         SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
@@ -107,16 +106,12 @@ public class TabFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.listView);
+        mRefreshLayout = view.findViewById(R.id.refreshLayout);
+        recyclerView.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL));
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+        FloatingActionButton fab = view.findViewById(R.id.fab);
 
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        int orientation = LinearLayoutManager.VERTICAL;
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext, orientation, false));
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
 
-        if (mRefreshLayout == null) {
-            mRefreshLayout = view.findViewById(R.id.refreshLayout);
-        }
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,24 +166,25 @@ public class TabFragment extends Fragment {
                 case 1:
                     List<DatabaseNews> list_get = (List<DatabaseNews>) msg.getData().getSerializable("list");
                     if (list_get.size() != 0) {
-                        if (list_get.get(0).getChannelId().equals(list_news.get(0).getChannelId())) {
+                        if (list_news.size() != 0 && list_get.get(0).getChannelId().equals(list_news.get(0).getChannelId())) {
                             mRefreshLayout.finishRefresh(false);
-                            ToastUtil.showShortString(getActivity(), "无可用更新！等等再刷新吧！");
+                            ToastUtil.showShortString(getActivity(), "无可用更新!");
                             break;
                         }
                         if (page == 1) {
                             list_news.clear();
                         }
-                        list_news.addAll((List<DatabaseNews>) msg.getData().getSerializable("list"));
-                        mRefreshLayout.finishRefresh();
-                        mRefreshLayout.finishLoadMore();
-                        refresh();
+                        list_news.addAll(list_get);
                     } else {
                         ToastUtil.showShortString(getActivity(), "刷新失败");
                     }
+                    mRefreshLayout.finishRefresh();
+                    mRefreshLayout.finishLoadMore();
+                    refresh();
                     break;
             }
-            return false;
+
+            return true;
         }
     });
 
@@ -216,7 +212,6 @@ public class TabFragment extends Fragment {
         if (title != null) {
             return LitePal.where("channelName = ?", title).find(DatabaseNews.class);
         }
-
         return list_news;
     }
 }

@@ -1,11 +1,14 @@
 package com.example.a18199.a16211160204niewei.Activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -30,6 +33,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import static android.view.View.SCROLLBARS_OUTSIDE_OVERLAY;
@@ -38,13 +43,16 @@ public class WebViewActivity extends AppCompatActivity {
     private Handler handler;
     private WebView webView;
     private String id;
+    private ProgressDialog progress;
+    private SimpleDateFormat simpleDateFormat;
 
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.webview_layout);
-
         webView = findViewById(R.id.webview);
         init();
+
         handler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
@@ -71,14 +79,25 @@ public class WebViewActivity extends AppCompatActivity {
             Toast.makeText(WebViewActivity.this, "---" + id + "---" + id, Toast.LENGTH_LONG).show();
         }
     }
+
     protected void onDestroy() {
         webView.removeAllViews();
         webView.destroy();
-        webView=null;
+        webView = null;
         handler.removeCallbacksAndMessages(null);
         super.onDestroy();
     }
+
     public void init() {
+        String day_night = SPUtils.getData("theme", "");
+        if (day_night.equals("day") || day_night.equals("")) {
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+        } else {
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            webView.setBackgroundColor(ContextCompat.getColor(this,android.R.color.transparent));
+            webView.setBackgroundResource(R.color.colorGary);
+        }
         WebSettings webSettings = webView.getSettings();
         webSettings.setDefaultTextEncodingName("utf-8");
         webSettings.setBlockNetworkImage(false);//解除数据阻止
@@ -91,7 +110,6 @@ public class WebViewActivity extends AppCompatActivity {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                //view.loadUrl(url);
                 webView.setEnabled(false);
                 return true;
             }
@@ -121,15 +139,10 @@ public class WebViewActivity extends AppCompatActivity {
         String style = "<style type=\"text/css\">.main_title{font-weight:bold;}</style>";
         String source_html = "<p>" + source + "  " + date + "</p>";
         if (SPUtils.getData("theme", "").equals("night")) {
-            //webView.loadUrl("javascript:load_night()");
             style += loadJs();
-        } else {
-            //webView.loadUrl("javascript:load_day()");
         }
         String html = "<html><header>" + style + " </header><body class=\"night\">" + titleHtml + source_html + content + "</body></html>";
         html = getNewContent(html);
-        Log.d("HTML", "load: " + html);
-        //webView.loadData(html,"text/html; charset=UTF-8", null);
         webView.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null);
     }
 

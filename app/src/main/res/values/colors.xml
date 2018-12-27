@@ -5,4 +5,5 @@
     <color name="colorAccent">#d81b60</color>
     <color name="colorBlack">#000</color>
     <color name="colorfad">#fff</color>
+    <color name="colorGary">#484848</color>
 </resources>

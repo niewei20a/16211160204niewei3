@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class NewsThread extends Thread {
+    private static final String TAG = "NewsThread";
     private Handler handler;
     private String pages;
     private String tilte;
@@ -29,14 +30,14 @@ public class NewsThread extends Thread {
         this.tilte = title;
         this.channelName = channelName;
     }
+
     @Override
     public void run() {
         ArrayList<DatabaseNews> list = new ArrayList<>();
-        String res;
         if (pages.equals("1") && (!channelName.equals(""))) {
             LitePal.deleteAll(DatabaseNews.class, "channelName = ?", channelName);
         }
-        res = new ShowApiRequest("http://route.showapi.com/109-35", "83588", "b81ffec323a743aa80bcd3eb3dfcce9d")
+        String res = new ShowApiRequest("http://route.showapi.com/109-35", "83588", "b81ffec323a743aa80bcd3eb3dfcce9d")
                 .addTextPara("channelId", "")
                 .addTextPara("channelName", channelName)
                 .addTextPara("title", tilte)
@@ -74,13 +75,14 @@ public class NewsThread extends Thread {
                     if (tilte.equals("")) {
                         np.save();
                     }
+                    Log.d(TAG, "run: getTitle "+np.getTitle());
                     list.add(np);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Message message = handler.obtainMessage();//获取message
+        Message message = handler.obtainMessage();
         message.what = 1;
         Bundle bundle = new Bundle();
         bundle.putSerializable("list", list);
