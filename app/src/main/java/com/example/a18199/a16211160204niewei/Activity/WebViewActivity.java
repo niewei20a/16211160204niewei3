@@ -52,7 +52,6 @@ public class WebViewActivity extends AppCompatActivity {
         setContentView(R.layout.webview_layout);
         webView = findViewById(R.id.webview);
         init();
-
         handler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
@@ -81,9 +80,6 @@ public class WebViewActivity extends AppCompatActivity {
     }
 
     protected void onDestroy() {
-        webView.removeAllViews();
-        webView.destroy();
-        webView = null;
         handler.removeCallbacksAndMessages(null);
         super.onDestroy();
     }
@@ -92,7 +88,6 @@ public class WebViewActivity extends AppCompatActivity {
         String day_night = SPUtils.getData("theme", "");
         if (day_night.equals("day") || day_night.equals("")) {
             getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-
         } else {
             getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             webView.setBackgroundColor(ContextCompat.getColor(this,android.R.color.transparent));
@@ -131,7 +126,6 @@ public class WebViewActivity extends AppCompatActivity {
 
     private void load(NewsDetail newsDetail) {
         String content = newsDetail.getContent();
-
         String date = newsDetail.getDate();
         String source = newsDetail.getSource();
         String tilte = newsDetail.getTitle();

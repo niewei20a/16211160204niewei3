@@ -105,6 +105,7 @@ public class SettingFragment extends PreferenceFragment {
             }
         });
         try {
+            pre_clear.setSummary("当前缓存为");
             pre_clear.setSummary("当前缓存为" + DataCleanManager.getTotalCacheSize(getActivity()));
         } catch (Exception e) {
             e.printStackTrace();
@@ -140,7 +141,6 @@ public class SettingFragment extends PreferenceFragment {
                     SPUtils.putData("picture", "no");
                 } else {
                     SPUtils.putData("picture", "have");
-
                 }
                 SendBroad();
                 return true;
